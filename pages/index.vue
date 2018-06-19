@@ -6,14 +6,10 @@
         nuxt-spa-demo
       </h1>
       <h2 class="subtitle">
-        Nuxt with sessionStorage or cookie
+        Examples of subtitle
       </h2>
       <div class="content">
-        <p>{{ counter }}</p>
-        <p>
-          <button @click="increment">+</button>
-          <button @click="decrement">-</button>
-        </p>
+        <p>All exmaples start here</p>
       </div>
     </div>
   </section>
@@ -21,16 +17,9 @@
 
 <script>
 import AppLogo from '~/components/AppLogo.vue'
-import { mapState, mapMutations } from 'vuex'
 export default {
   components: {
     AppLogo
-  },
-  computed: {
-    ...mapState(['counter'])
-  },
-  methods: {
-    ...mapMutations(['increment', 'decrement'])
   }
 }
 </script>
@@ -64,9 +53,6 @@ export default {
   }
 }
 .content {
-  button {
-    padding: 10px;
-    margin: 10px;
-  }
+  
 }
 </style>
