@@ -6,14 +6,30 @@
         nuxt-spa-demo
       </h1>
       <h2 class="subtitle">
-        Nuxt with sessionStorage or cookie
+        Nuxt & ElementUI form has file submit with axios
       </h2>
       <div class="content">
-        <p>{{ counter }}</p>
-        <p>
-          <button @click="increment">+</button>
-          <button @click="decrement">-</button>
-        </p>
+        <el-form ref="form" :model="form" label-width="120px">
+          <el-form-item label="活动名称">
+            <el-input v-model="form.name"></el-input>
+          </el-form-item>
+          <el-form-item label="活动区域">
+            <el-select v-model="form.region" placeholder="请选择活动区域">
+              <el-option label="区域一" value="shanghai"></el-option>
+              <el-option label="区域二" value="beijing"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="身份证正面">
+            <el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePreview" :on-remove="handleRemove" :before-remove="beforeRemove" multiple :limit="3" :on-exceed="handleExceed" :file-list="fileList">
+              <el-button size="small" type="primary">点击上传</el-button>
+              <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+            </el-upload>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="onSubmit">提交</el-button>
+            <el-button>取消</el-button>
+          </el-form-item>
+        </el-form>
       </div>
     </div>
   </section>
@@ -21,16 +37,39 @@
 
 <script>
 import AppLogo from '~/components/AppLogo.vue'
-import { mapState, mapMutations } from 'vuex'
 export default {
   components: {
     AppLogo
   },
-  computed: {
-    ...mapState(['counter'])
+  data() {
+    return {
+      form: {
+        name: '',
+        region: ''
+      },
+      fileList: []
+    }
   },
   methods: {
-    ...mapMutations(['increment', 'decrement'])
+    handleRemove(file, fileList) {
+      console.log(file, fileList)
+    },
+    handlePreview(file) {
+      console.log(file)
+    },
+    handleExceed(files, fileList) {
+      this.$message.warning(
+        `当前限制选择 3 个文件，本次选择了 ${
+          files.length
+        } 个文件，共选择了 ${files.length + fileList.length} 个文件`
+      )
+    },
+    beforeRemove(file, fileList) {
+      return this.$confirm(`确定移除 ${file.name}？`)
+    },
+    onSubmit() {
+      console.log('submit!')
+    }
   }
 }
 </script>
@@ -64,9 +103,6 @@ export default {
   }
 }
 .content {
-  button {
-    padding: 10px;
-    margin: 10px;
-  }
+  text-align: left;
 }
 </style>
