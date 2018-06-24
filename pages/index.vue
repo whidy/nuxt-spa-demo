@@ -20,7 +20,13 @@
             </el-select>
           </el-form-item>
           <el-form-item label="身份证正面">
-            <el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePreview" :on-remove="handleRemove" :before-remove="beforeRemove" multiple :limit="3" :on-exceed="handleExceed" :file-list="fileList">
+            <el-upload 
+              action="" 
+              :http-request="handleFile" 
+              :multiple="false" 
+              :limit="1" 
+              :on-exceed="handleExceed" 
+              :file-list="fileList">
               <el-button size="small" type="primary">点击上传</el-button>
               <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
             </el-upload>
@@ -51,24 +57,28 @@ export default {
     }
   },
   methods: {
-    handleRemove(file, fileList) {
-      console.log(file, fileList)
-    },
-    handlePreview(file) {
-      console.log(file)
+    handleFile(response) {
+      this.fileList.push(response.file)
     },
     handleExceed(files, fileList) {
-      this.$message.warning(
-        `当前限制选择 3 个文件，本次选择了 ${
-          files.length
-        } 个文件，共选择了 ${files.length + fileList.length} 个文件`
-      )
-    },
-    beforeRemove(file, fileList) {
-      return this.$confirm(`确定移除 ${file.name}？`)
+      this.$message.warning(`最多上传 ${files.length} 个文件`)
     },
     onSubmit() {
-      console.log('submit!')
+      let form = this.$refs['form'].$el
+      let formData = new FormData(form)
+      formData.append('name', this.form.name)
+      formData.append('region', this.form.region)
+      formData.append('file', this.fileList[0])
+      this.$axios
+        .$post('/api/active', formData)
+        .then(response => {
+          if (response.code === 200) {
+            // 提交成功将要执行的代码
+          }
+        })
+        .catch(function(error) {
+          // console.log(error)
+        })
     }
   }
 }
