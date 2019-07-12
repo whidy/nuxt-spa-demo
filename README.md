@@ -1,5 +1,7 @@
 # nuxt-spa-demo
 
+**特别注意，项目历史有些久远，请针对功能进行参考研究，勿用于实际开发**
+
 > examples of nuxt spa mode
 
 本仓用于在学习Nuxt中使用SPA模式下开发的相关总结
